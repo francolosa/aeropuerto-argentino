@@ -5,6 +5,12 @@ module.exports = (sequelize, dataTypes) => {
             autoIncrement: true,
             primaryKey: true
         },
+        origin: {
+            type: dataTypes.STRING
+        },
+        destination: {
+            type: dataTypes.STRING
+        },
         departure_time: {
             type: dataTypes.DATE,
         },

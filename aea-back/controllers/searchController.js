@@ -1,40 +1,42 @@
 let db = require("../database/models");
-const Account = require('../database/models/Account');
-const Transfer = require("../database/models/Transfer");
-const Client = require("../database/models/Client");
+const Airline = require('../database/models/Airline');
+const Booking = require("../database/models/Booking");
+const Flight = require("../database/models/Flight");
+const Passenger = require("../database/models/Passenger");
 const { response } = require("express");
 
-const clientController = {
-    getAccounts: (req, res) => {
-        //GET CUENTAS (PARAMETROS: NUMERO DE CLIENTE)
-        db.Account.findAll({
-           where: {
-                clientId: req.params.clientId
+const passengerController = {
+    getFlights: (req, res) => {
+        db.Flight.findAll({
+            where: {
+                seats_available: !0
             }
         })
         .then((response) => {
             res.send(response)
         })
     },
-    getAccount: async (req, res) => {
-        //GET CUENTA (PARAMETROS: NUMERO DE CLIENTE Y NUMERO DE CUENTA)
-        const client = await db.Client.findByPk(1);
-        const account = await db.Account.findByPk(req.params.accountId);
-        let response = {
-                client: {...client.dataValues},
-                account: {...account.dataValues}
-        }
-        res.send(response)
-    },
-    getTransfers: async (req, res) => {
-        //  GET TRANSFERS (PARAMETRO: NUMERO DE CLIENTE)
-        console.log(req.params.clientId)
-        const response = await db.Transfer.findAll({
-            where: {
-                clientId: req.params.clientId
-            }
-        })  
+    getFlight: (req, res) => {
+        db.Flight.findByPk(req.params.flight_id)
+            .then((response) => {
             res.send(response)
+        })
+    },
+    getAirLines: async (req, res) => {
+        db.Transfer.findAll()
+        .then((response)=> {
+            res.send(response)
+        }) 
+    },
+    getAirLine: async (req, res) => {
+        db.Transfer.findAll({
+            where: {
+                airline_id: req.params.airline_id
+            }
+        })
+        .then((response)=>{
+            res.send(response)
+        })  
     },
     createTransfer: async (req, res) => {
         let cashOrigin = await db.Account.findByPk(req.body.originAccountId);
@@ -60,4 +62,4 @@ const clientController = {
     }
 }
 
-module.exports = clientController;
+module.exports = passengerController;
