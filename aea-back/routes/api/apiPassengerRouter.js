@@ -8,7 +8,9 @@ router.get('/profile', APIPassengerController.getPassengerData);
 router.get('/flights/', APIPassengerController.getPassengerFlights);
 router.get('/flights/:flight_id', APIPassengerController.getPassengerFlight);
 
-router.post('/flights/book/:flight_id', APIBookingController.bookFlight);
+router.post('/flights/:flight_id?/book/', APIBookingController.bookFlight);
+router.post('/signIn/', APIPassengerController.signInPassenger);
+router.post('/logIn/', APIPassengerController.logInPassenger);
 
 router.get('/bookings', APIPassengerController.getPassengerBookings);
 router.get('/bookings/booking_id', APIPassengerController.getPassengerBooking);
