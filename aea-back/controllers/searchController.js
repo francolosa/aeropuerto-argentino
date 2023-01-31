@@ -1,4 +1,5 @@
 let db = require("../database/models");
+const { Op } = require("sequelize")
 const Airline = require('../database/models/Airline');
 const Booking = require("../database/models/Booking");
 const Flight = require("../database/models/Flight");
@@ -7,9 +8,12 @@ const { response } = require("express");
 
 const passengerController = {
     getFlights: (req, res) => {
+        console.log("hola")
         db.Flight.findAll({
             where: {
-                seats_available: !0
+                seats_available: {
+                    [Op.ne]: 0
+                }
             }
         })
         .then((response) => {
@@ -23,13 +27,13 @@ const passengerController = {
         })
     },
     getAirLines: async (req, res) => {
-        db.Transfer.findAll()
+        db.Airline.findAll()
         .then((response)=> {
             res.send(response)
         }) 
     },
     getAirLine: async (req, res) => {
-        db.Transfer.findAll({
+        db.Airline.findAll({
             where: {
                 airline_id: req.params.airline_id
             }

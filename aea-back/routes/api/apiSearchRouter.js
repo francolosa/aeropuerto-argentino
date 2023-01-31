@@ -2,10 +2,12 @@ var express = require('express');
 var router = express.Router();
 const APISearchController = require("../../controllers/searchController");
 
-router.get('/flights/', APIPassengerController.getFlights);
-router.get('/flights/:flight_id', APIPassengerController.getFlight);
+//ok
+router.get('/flights/', APISearchController.getFlights);
+router.get('/flights/:flight_id', APISearchController.getFlight);
 
-router.post('/airlines/', APIPassengerController.getAirLines);
-router.post('/airlines/:airline_id', APIPassengerController.getAirLine);
+//ok
+router.get('/airlines/', APISearchController.getAirLines);
+router.get('/airlines/:airline_id', APISearchController.getAirLine);
 
 module.exports = router;

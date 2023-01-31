@@ -3,14 +3,15 @@ var router = express.Router();
 const APIPassengerController = require("../../controllers/passengerController");
 const APIBookingController = require("../../controllers/bookingController");
 
-router.get('/:passenger_id/flights/', APIPassengerController.getPassengerFlights);
-router.get('/:passenger_id/flights/:flight_id', APIPassengerController.getPassengerFlight);
+router.get('/profile', APIPassengerController.getPassengerData);
 
-router.post('/:passenger_id/flights/:flight_id', logged, APIBookingController.bookFlight);
+router.get('/flights/', APIPassengerController.getPassengerFlights);
+router.get('/flights/:flight_id', APIPassengerController.getPassengerFlight);
 
-router.get('/:passenger_id', logged, APIPassengerController.getPassengerData);
+router.post('/flights/book/:flight_id', APIBookingController.bookFlight);
 
-router.get('/:passenger_id/bookings', logged, APIPassengerController.getPassengerBookings);
-router.get('/:passenger_id/bookings/booking_id', logged, APIPassengerController.getPassengerBooking);
+router.get('/bookings', APIPassengerController.getPassengerBookings);
+router.get('/bookings/booking_id', APIPassengerController.getPassengerBooking);
+
 
 module.exports = router;

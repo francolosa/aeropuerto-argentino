@@ -7,12 +7,14 @@ const { response } = require("express");
 
 const passengerController = {
     getPassengerData: (req, res) => {
+        res.send("getPassengerData")
         db.Booking.findByPk(req.params.passenger_id)
         .then((response) => {
             res.send(response)
         })
     },   
     getPassengerBookings: (req, res) => {
+        res.send("getPassengerBookings")
         db.Booking.findAll({
             where: {
                 passenger_id: req.params.passenger_id
@@ -23,6 +25,7 @@ const passengerController = {
         })
     },    
     getPassengerBooking: (req, res) => {
+        res.send("getPassengerBooking")
         db.Booking.findAll({
            where: {
             passenger_id: req.params.passenger_id,
@@ -34,16 +37,23 @@ const passengerController = {
         })
     },
     getPassengerFlights: (req, res) => {
-        db.Flight.findAll({
-            where: {
-                passenger_id: req.params.passenger_id
-            }
-        })
-        .then((response) => {
-            res.send(response)
-        })
+        res.send("getPassengerFlights")
+        try {
+            db.Flight.findAll({
+                where: {
+                    passenger_id: req.params.passenger_id
+                }
+            })
+            .then((response) => {
+                res.send(response)
+            })
+        } catch (error) {
+            console.info(error)
+            return
+        }
     },
     getPassengerFlight: (req, res) => {
+        res.send("getPassengerFlight")
         db.Flight.findAll({
            where: {
             passenger_id: req.param.passenger_id,
@@ -52,6 +62,14 @@ const passengerController = {
         })
         .then((response) => {
             res.send(response)
+        })
+    },
+    createPassenger: (req, res) => {
+        res.send("createPassenger")
+        db.Passenger.create({
+            dni: req.body.dni,
+            name: req.body.name,
+            last_name: req.body.last_name
         })
     }
 }

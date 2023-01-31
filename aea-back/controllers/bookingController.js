@@ -7,24 +7,22 @@ const { response } = require("express");
 
 const bookingController = {
     bookFlight: async (req, res) => {
-        let cashOrigin = await db.Account.findByPk(req.body.originAccountId);
-        let cashDestiny = await db.Account.findByPk(req.body.destinyAccountId);
-
-        if (cashOrigin.cash - parseInt(req.body.amount) > 0) {
-            await db.Account.update(
-                { cash: cashOrigin.cash - parseInt(req.body.amount) },
-                { where: { accountId: req.body.originAccountId } }
+        let flight_to_book = await db.Flight.findByPk(req.params.flight_id);
+        let seats_available = await flight_to_book.seats_available;
+        let flight_booked;
+        let booking;
+        
+        if (seats_available > 0) {
+            flight_booked = await db.Flight.update(
+                { seats_available: seats_available - 1 },
+                { where: { flight_id: req.body.flight_id } }
             )
-            await db.Account.update(
-                { cash: cashDestiny.cash + parseInt(req.body.amount) },
-                { where: { accountId: req.body.destinyAccountId } }
+            booking = await db.Booking.create(
+                { passenger_id: req.params.passenger_id,
+                  flight_id: req.params.flight_id
+                },
             )
-            await db.Transfer.create({
-                clientId: req.body.clientId,
-                originAccountId: req.body.originAccountId,
-                destinyAccountId: req.body.destinyAccountId,
-                amount: req.body.amount
-            })
+            return booking
         }
         res.send("status 200")
     }

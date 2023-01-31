@@ -8,9 +8,6 @@ module.exports = (sequelize, dataTypes) => {
         name: {
             type: dataTypes.TEXT
         },
-        flight_id: {
-            type: dataTypes.INTEGER,
-        },
         created_at: {
             type: dataTypes.DATE
         },
@@ -19,7 +16,7 @@ module.exports = (sequelize, dataTypes) => {
         },
     }, { 
         tableName: "airline",
-        timestamps: true
+        underscored: true
      })
 
 
