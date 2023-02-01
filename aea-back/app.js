@@ -26,10 +26,7 @@ app.use(
   session({
     secret: "secreto",
     resave: true,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 30000
-    }
+    saveUninitialized: true
   })
 );
 app.use('/', indexRouter);

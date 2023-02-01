@@ -12,6 +12,7 @@ router.get('/flights/:flight_id', APIPassengerController.getPassengerFlight);
 router.post('/flights/:flight_id?/book/', APIBookingController.bookFlight);
 router.post('/signIn/', APIPassengerController.signInPassenger);
 router.post('/logIn/', APIPassengerController.logInPassenger);
+router.post('/logOut/', APIPassengerController.logOutPassenger);
 
 router.get('/bookings', APIPassengerController.getPassengerBookings);
 router.get('/bookings/booking_id', APIPassengerController.getPassengerBooking);

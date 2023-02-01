@@ -118,6 +118,16 @@ const passengerController = {
             console.info(error)
             return
         }
+    },
+    logOutPassenger: async (req, res) => {
+        try {            
+            req.session.destroy(()=>{
+                res.send("deslogueo exitoso")
+            })
+        } catch (error) {
+            console.info(error)
+            return
+        }
     }
 }
 
