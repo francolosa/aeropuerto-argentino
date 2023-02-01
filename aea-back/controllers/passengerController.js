@@ -4,6 +4,7 @@ const Booking = require("../database/models/Booking");
 const Flight = require("../database/models/Flight");
 const Passenger = require("../database/models/Passenger");
 const { response } = require("express");
+const bcrypt = require('bcryptjs')
 
 const passengerController = {
     getPassengerData: (req, res) => {
@@ -69,6 +70,22 @@ const passengerController = {
     },
     signInPassenger: (req, res) => {
         try {
+            if(req.params.dni == undefined){
+                return res.send("El campo dni es obligatorio")
+            }
+            if(req.params.email == undefined){
+                return res.send("El campo email es obligatorio")
+            }
+            if(req.params.name == undefined){
+                return res.send("El campo nombre es obligatorio")
+            }
+            if(req.params.last_name == undefined){
+                return res.send("El campo apellido es obligatorio")
+            }
+            if(req.params.password.length() > 6){
+                return res.send("El campo contraseña es obligatorio y debe ser mayor a 6 caracteres")
+            }
+            
             db.Passenger.create({
                 dni: req.body.dni,
                 email: req.body.email.toUpperCase(),
