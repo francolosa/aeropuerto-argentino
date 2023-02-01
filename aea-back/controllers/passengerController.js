@@ -68,24 +68,31 @@ const passengerController = {
             return
         }
     },
-    signInPassenger: (req, res) => {
+    signInPassenger: async (req, res) => {
         try {
-            if(req.params.dni == undefined){
+            if(req.body.dni == ''){
                 return res.send("El campo dni es obligatorio")
             }
-            if(req.params.email == undefined){
+            if(req.body.email == ''){
                 return res.send("El campo email es obligatorio")
             }
-            if(req.params.name == undefined){
+            if(req.body.name == ''){
                 return res.send("El campo nombre es obligatorio")
             }
-            if(req.params.last_name == undefined){
+            if(req.body.last_name == ''){
                 return res.send("El campo apellido es obligatorio")
             }
-            if(req.params.password.length() > 6){
+            if(req.body.password.length < 6){
                 return res.send("El campo contraseña es obligatorio y debe ser mayor a 6 caracteres")
             }
-            
+            let passenger_already_exists = await db.Passenger.findOne({
+                where: {
+                    dni: req.body.dni
+                }
+            })
+            if(passenger_already_exists){
+                return res.send("ya existe un pasajero creado con ese numero de documento")
+            }
             db.Passenger.create({
                 dni: req.body.dni,
                 email: req.body.email.toUpperCase(),
