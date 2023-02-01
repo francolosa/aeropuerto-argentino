@@ -21,79 +21,63 @@ const passengerController = {
             return
         }
     },
-    getPassengerBookings: (req, res) => {
-        res.send("getPassengerBookings")
+    getPassengerBookings: async (req, res) => {
         try {
-            db.Booking.findAll({
-                where: {
-                    passenger_id: req.params.passenger_id
-                }
-            })
+            if(req.params.booking_id){
+                db.Booking.findByPk(req.params.booking_id)
                 .then((response) => {
                     res.send(response)
                 })
-        } catch (error) {
-            console.info(error)
-            return
-        }
-    },
-    getPassengerBooking: (req, res) => {
-        res.send("getPassengerBooking")
-        try {
-            db.Booking.findAll({
-                where: {
-                    passenger_id: req.params.passenger_id,
-                    booking_id: req.params.booking_id
-                }
-            })
-                .then((response) => {
-                    res.send(response)
+            } else {
+            console.log("bookings")
+                let passenger = await db.Passenger.findOne({
+                    where: {
+                        emaiL: req.session.email
+                    }
                 })
-        } catch (error) {
-            console.info(error)
-            return
-        }
-    },
-    getPassengerFlights: (req, res) => {
-        res.send("getPassengerFlights")
-        try {
-            db.Flight.findAll({
-                where: {
-                    passenger_id: req.params.passenger_id
-                }
-            })
-                .then((response) => {
-                    res.send(response)
+                db.Booking.findAll({
+                    where: {
+                        passenger_id: passenger.passenger_id
+                    }
                 })
+                    .then((response) => {
+                        res.send(response)
+                    })
+                }
         } catch (error) {
             console.info(error)
             return
         }
     },
     getPassengerFlight: (req, res) => {
-        res.send("getPassengerFlight")
         try {
-            db.Flight.findAll({
-                where: {
-                    passenger_id: req.param.passenger_id,
-                    flight_id: req.params.flight_id
-                }
-            })
+            if(req.params.flight_id){
+                db.Flight.findByPk(req.params.flight_id)
                 .then((response) => {
                     res.send(response)
                 })
+            } else {
+                db.Flight.findAll()
+                .then((response) => {
+                    res.send(response)
+                })
+            }
         } catch (error) {
             console.info(error)
             return
         }
     },
     signInPassenger: (req, res) => {
-        res.send("createPassenger")
         try {
             db.Passenger.create({
                 dni: req.body.dni,
-                name: req.body.name,
-                last_name: req.body.last_name
+                email: req.body.email.toUpperCase(),
+                name: req.body.name.toUpperCase(),
+                last_name: req.body.last_name.toUpperCase(),
+                password: req.body.password
+            })
+            .then((response) => {
+                res.send(response)
             })
         } catch (error) {
             console.info(error)

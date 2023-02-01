@@ -4,18 +4,16 @@ const APIPassengerController = require("../../controllers/passengerController");
 const APIBookingController = require("../../controllers/bookingController");
 const userLogged = require("../../middlewares/userLogged");
 
-router.get('/profile', userLogged, APIPassengerController.getPassengerData);
-
-router.get('/flights/', APIPassengerController.getPassengerFlights);
-router.get('/flights/:flight_id', APIPassengerController.getPassengerFlight);
+router.get('/bookings/:booking_id?', userLogged, APIPassengerController.getPassengerBookings);
 
 router.post('/flights/:flight_id?/book/', APIBookingController.bookFlight);
+router.get('/flights/:flight_id?', userLogged, APIPassengerController.getPassengerFlight);
+
 router.post('/signIn/', APIPassengerController.signInPassenger);
 router.post('/logIn/', APIPassengerController.logInPassenger);
-router.post('/logOut/', APIPassengerController.logOutPassenger);
+router.post('/logOut/', userLogged, APIPassengerController.logOutPassenger);
+router.get('/profile', userLogged, APIPassengerController.getPassengerData);
 
-router.get('/bookings', APIPassengerController.getPassengerBookings);
-router.get('/bookings/booking_id', APIPassengerController.getPassengerBooking);
 
 
 module.exports = router;
