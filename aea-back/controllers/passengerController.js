@@ -101,13 +101,13 @@ const passengerController = {
             if(req.body.password.length < 6){
                 return res.send("El campo contraseña es obligatorio y debe ser mayor a 6 caracteres")
             }
-
+            const hashedPass = await bcrypt.hash(req.body.password, 10);
             db.Passenger.create({
                 dni: req.body.dni,
                 email: req.body.email.toUpperCase(),
                 name: req.body.name.toUpperCase(),
                 last_name: req.body.last_name.toUpperCase(),
-                password: req.body.password
+                password: hashedPass
             })
             .then((response) => {
                 res.send(response)
@@ -118,14 +118,22 @@ const passengerController = {
         }
     },
     logInPassenger: async (req, res) => {
-        try {            
-            let logIn = await db.Passenger.findOne({
+        try {
+            if(req.body.email == ''){
+                return res.send("El campo email es obligatorio")
+            }            
+            let user = await db.Passenger.findOne({
                 where: {
                     email: req.body.email,
-                    password: req.body.password
                 }
             })
-            if(logIn != undefined){
+            if(!user){
+                return res.send("no existe ningun usuario con ese email")
+            }
+            if(req.body.password == ''){
+                return res.send("El campo contraseña es obligatorio")
+            }
+            if(await bcrypt.compare(req.body.password, user.password)){
                 req.session.email = req.body.email;
                 return res.send("logueado correctamente")
             } else {
