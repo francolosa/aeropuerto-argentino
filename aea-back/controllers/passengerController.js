@@ -73,8 +73,24 @@ const passengerController = {
             if(req.body.dni == ''){
                 return res.send("El campo dni es obligatorio")
             }
+            let passenger_already_exists = await db.Passenger.findOne({
+                where: {
+                    dni: req.body.dni
+                }
+            })
+            if(passenger_already_exists){
+                return res.send("ya existe un pasajero creado con ese numero de documento")
+            }
             if(req.body.email == ''){
                 return res.send("El campo email es obligatorio")
+            }
+            let email_already_exists = await db.Passenger.findOne({
+                where: {
+                    email: req.body.email
+                }
+            })
+            if(email_already_exists){
+                return res.send("ya existe un pasajero creado con ese email")
             }
             if(req.body.name == ''){
                 return res.send("El campo nombre es obligatorio")
@@ -85,14 +101,7 @@ const passengerController = {
             if(req.body.password.length < 6){
                 return res.send("El campo contraseña es obligatorio y debe ser mayor a 6 caracteres")
             }
-            let passenger_already_exists = await db.Passenger.findOne({
-                where: {
-                    dni: req.body.dni
-                }
-            })
-            if(passenger_already_exists){
-                return res.send("ya existe un pasajero creado con ese numero de documento")
-            }
+
             db.Passenger.create({
                 dni: req.body.dni,
                 email: req.body.email.toUpperCase(),
