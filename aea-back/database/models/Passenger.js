@@ -8,6 +8,12 @@ module.exports = (sequelize, dataTypes) => {
         dni: {
             type: dataTypes.INTEGER
         },
+        email: {
+            type: dataTypes.STRING
+        },
+        password: {
+            type: dataTypes.STRING
+        },
         name: {
             type: dataTypes.STRING
         },

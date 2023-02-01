@@ -7,9 +7,12 @@ const { response } = require("express");
 
 const passengerController = {
     getPassengerData: (req, res) => {
-        res.send("getPassengerData")
         try {
-            db.Booking.findByPk(req.params.passenger_id)
+            db.Passenger.findOne({
+                where: {
+                    email: req.session.email
+                }
+            })
                 .then((response) => {
                     res.send(response)
                 })
@@ -97,19 +100,24 @@ const passengerController = {
             return
         }
     },
-    logInPassenger: (req, res) => {
-        res.send("logInPassenger")
-        /*
-        try {
-            db.Passenger.({
-                dni: req.body.dni,
-                name: req.body.name,
-                last_name: req.body.last_name
+    logInPassenger: async (req, res) => {
+        try {            
+            let logIn = await db.Passenger.findOne({
+                where: {
+                    email: req.body.email,
+                    password: req.body.password
+                }
             })
+            if(logIn != undefined){
+                req.session.email = req.body.email;
+                return res.send("logueado correctamente")
+            } else {
+                return res.send("usuario o contraseña invalidos")
+            } 
         } catch (error) {
             console.info(error)
             return
-        }*/
+        }
     }
 }
 

@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors')
+const session = require("express-session");
 var indexRouter = require('./routes/index');
 var APIPassengerRouter = require('./routes/api/apiPassengerRouter');
 var APISearchRouter = require('./routes/api/apiSearchRouter');
@@ -21,6 +22,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors());
+app.use(
+  session({
+    secret: "secreto",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 30000
+    }
+  })
+);
 app.use('/', indexRouter);
 app.use('/api/passenger', APIPassengerRouter);
 app.use('/api/user', APISearchRouter);
