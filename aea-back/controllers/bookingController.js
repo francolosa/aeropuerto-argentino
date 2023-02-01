@@ -8,17 +8,16 @@ const { response } = require("express");
 const bookingController = {
     bookFlight: async (req, res) => {
         try {
+            let flight_booked;
+            let booking;
             let flight_to_book = await db.Flight.findByPk(req.body.flight_id);
             let passenger_exists = await db.Passenger.findByPk(req.body.passenger_id);
             
             let passenger_books = await db.Booking.findAll({ where: {passenger_id: req.body.passenger_id}});
-            let passenger_already_booked = await passenger_books.find(flight_id => flight_id = req.body.flight_id);
-            if(passenger_already_booked){
+            let passenger_already_booked = await passenger_books.find(e => e.flight_id == req.body.flight_id);
+            if(passenger_already_booked != undefined){
                 return res.send("El pasajero ya tiene una reserva en este vuelo, para modificar su reserva vaya al siguiente link")
             }
-
-            let flight_booked;
-            let booking;
 
             if(!passenger_exists){
                 return res.send("No existe pasajero seleccionado")
