@@ -8,39 +8,41 @@ const { response } = require("express");
 
 const passengerController = {
     getFlights: (req, res) => {
-        console.log("hola")
-        db.Flight.findAll({
-            where: {
-                seats_available: {
-                    [Op.ne]: 0
+        if (req.params.flight_id) {
+            db.Flight.findByPk(req.params.flight_id)
+                .then((response) => {
+                    res.send(response)
+                })
+        } else {
+            db.Flight.findAll({
+                where: {
+                    seats_available: {
+                        [Op.ne]: 0
+                    }
                 }
-            }
-        })
-        .then((response) => {
-            res.send(response)
-        })
-    },
-    getFlight: (req, res) => {
-        db.Flight.findByPk(req.params.flight_id)
-            .then((response) => {
-            res.send(response)
-        })
+            })
+                .then((response) => {
+                    res.send(response)
+                })
+        }
+
     },
     getAirLines: async (req, res) => {
-        db.Airline.findAll()
-        .then((response)=> {
-            res.send(response)
-        }) 
-    },
-    getAirLine: async (req, res) => {
-        db.Airline.findAll({
-            where: {
-                airline_id: req.params.airline_id
-            }
-        })
-        .then((response)=>{
-            res.send(response)
-        })  
+        if (req.params.airline_id) {
+            db.Airline.findAll({
+                where: {
+                    airline_id: req.params.airline_id
+                }
+            })
+                .then((response) => {
+                    res.send(response)
+                })
+        } else {
+            db.Airline.findAll()
+                .then((response) => {
+                    res.send(response)
+                })
+        }
     }
 }
 

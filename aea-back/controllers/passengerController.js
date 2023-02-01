@@ -110,7 +110,8 @@ const passengerController = {
                 password: hashedPass
             })
             .then((response) => {
-                res.send(response)
+                console.log(response)
+                res.send("Se creo correctamente el usuario")
             })
         } catch (error) {
             console.info(error)
