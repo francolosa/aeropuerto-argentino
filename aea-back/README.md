@@ -1,4 +1,5 @@
 #Aeropuerto Argentino is a microservice designed for users to search and book flights to a sql database, it also contains validations for users with hashed passwords
+In the folder "info" you will find photos of some functionalities.
 
 Database apps:
 
@@ -18,4 +19,3 @@ back end:
 Misc:
 
 * Postman
-You can find the schema and database on database/db

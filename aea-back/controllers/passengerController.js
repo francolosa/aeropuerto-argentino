@@ -119,6 +119,7 @@ const passengerController = {
         }
     },
     logInPassenger: async (req, res) => {
+        console.log(req.body)
         try {
             if(req.body.email == ''){
                 return res.send("El campo email es obligatorio")
